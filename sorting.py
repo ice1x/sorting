@@ -2,7 +2,27 @@ import random
 from datetime import datetime
 
 
-nums = [int(10000*random.random()) for i in xrange(10000)]
+def getArray():
+    return [int(10000 * random.random()) for i in range(10000)]
+
+
+def shellSort(data):
+    """
+    Shell sort using Shell's (original) gap sequence: n/2, n/4, ..., 1.
+    """
+    gap = len(data) // 2
+    # loop over the gaps
+    while gap > 0:
+        # do the insertion sort
+        for i in range(gap, len(data)):
+            val = data[i]
+            j = i
+            while j >= gap and data[j - gap] > val:
+                data[j] = data[j - gap]
+                j -= gap
+            data[j] = val
+        gap //= 2
+    return data
 
 
 def bubble(data):
@@ -59,20 +79,26 @@ def quicksort_optimized(data, fst, lst):
     return data
 
 
+nums = getArray()
+t_start = datetime.now()
+out = shellSort(nums)
+t_end = datetime.now() - t_start
+print('shellSort', t_end)
+
+nums = getArray()
 t_start = datetime.now()
 out = bubble(nums)
 t_end = datetime.now() - t_start
-print out
-print t_end
+print('bubble', t_end)
 
+nums = getArray()
 t_start = datetime.now()
 out = quicksort_original(nums)
 t_end = datetime.now() - t_start
-print out
-print t_end
+print('quicksort_original', t_end)
 
+nums = getArray()
 t_start = datetime.now()
 out = quicksort_optimized(nums, 0, len(nums) - 1)
 t_end = datetime.now() - t_start
-print out
-print t_end
+print('quicksort_optimized', t_end)
